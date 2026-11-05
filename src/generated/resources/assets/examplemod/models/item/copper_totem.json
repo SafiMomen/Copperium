@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "examplemod:item/copper_gear"
+    "layer0": "examplemod:item/copper_totem"
   }
 }
