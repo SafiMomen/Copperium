@@ -16,7 +16,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ExampleMod.MODID)
 public class ExampleMod {
-    public static final String MODID = "examplemod";
+    public static final String MODID = "clm_integrated";
     
     public static final Registrate REGISTRATE = 
         Registrate.create(ExampleMod.MODID);
@@ -29,16 +29,11 @@ public class ExampleMod {
     public ExampleMod(IEventBus modEventBus, ModContainer modContainer) {
         AllItems.register();
         AllBlockEntities.register();
-        
-        // ExampleMod.REGISTRATE.registerEventListeners(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
