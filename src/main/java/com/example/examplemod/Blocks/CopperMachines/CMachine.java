@@ -2,6 +2,9 @@ package com.example.examplemod.Blocks.CopperMachines;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
+import com.example.examplemod.AllBlockEntityTypes;
 import com.example.examplemod.AllItems;
 
 import net.minecraft.core.BlockPos;
@@ -18,13 +21,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class CMachine extends Block {
+public class CMachine extends Block implements EntityBlock {
     public static final BooleanProperty IS_PROCESSING = 
         BooleanProperty.create("processing_state");
 
@@ -39,6 +44,19 @@ public class CMachine extends Block {
         this.registerDefaultState(
             Objects.requireNonNull(blockDefinition)
         ); 
+    }
+
+    @Override
+    @Nullable
+    public BlockEntity newBlockEntity(
+        BlockPos worldPosition, BlockState blockState) {
+
+        // assuming this gets called once
+        // and once called, it connects approate entity object.
+        return new CMachineEntity(
+            AllBlockEntityTypes.COPPER_MACHINE_ENTITY.get(), 
+            worldPosition, 
+            blockState);
     }
     
     @Override
@@ -117,6 +135,10 @@ public class CMachine extends Block {
                 state.setValue(IS_PROCESSING, true),
                 UPDATE_ALL
             );
+            if (serverLevel.getBlockEntity(pos) instanceof CMachineEntity machine) 
+            {
+                machine.StartProcessing();
+            }
 
             this.processBlockInteraction(serverLevel, player, pos);
 
