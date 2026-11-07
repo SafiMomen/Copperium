@@ -27,7 +27,8 @@ public class ExampleMod {
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public ExampleMod(IEventBus modEventBus, ModContainer modContainer) {
         AllItems.register();
-        AllBlockEntities.register();
+        AllBlocks.register();
+        AllBlockEntityTypes.register();
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.

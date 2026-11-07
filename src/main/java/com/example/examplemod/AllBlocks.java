@@ -1,29 +1,26 @@
 package com.example.examplemod;
 
-import com.example.examplemod.Blocks.CopperMachine;
-
+import com.example.examplemod.Blocks.CopperMachines.CMachine;
+import com.example.examplemod.Blocks.CopperMachines.CMachineEntity;
+import com.example.examplemod.Blocks.CopperMachines.CMachineRender;
 import com.tterrag.registrate.Registrate;
-import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.common.Tags;
 
-public class AllBlockEntities {
+public class AllBlocks {
     private static final Registrate REGISTRATE = ExampleMod.getRegistrate();
 
-    // provided with a block of copper, it will give back a copper gear 
+    // provided with a block of copper, it will give back a copper gear
     // it takes time to process, or should take time to process
-    public static final BlockEntry<CopperMachine> COPPER_MACHINE = REGISTRATE
-        .block("copper_machine", CopperMachine::new)
+    public static final BlockEntry<CMachine> COPPER_MACHINE = REGISTRATE
+        .block("copper_machine", CMachine::new)
         .initialProperties(() -> Blocks.DISPENSER)
         .properties(properties -> properties
             // and afterwards should also be unbreakable in the world.

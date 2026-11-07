@@ -1,4 +1,4 @@
-package com.example.examplemod.Blocks;
+package com.example.examplemod.Blocks.CopperMachines;
 
 import java.util.Objects;
 
@@ -21,21 +21,24 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class CopperMachine extends Block {
+public class CMachine extends Block {
     public static final BooleanProperty IS_PROCESSING = 
         BooleanProperty.create("processing_state");
 
     public static final int PROCESSING_TIME = 4 * 20; // 5 seconds
     
-    public CopperMachine(Properties properties) {
+    public CMachine(Properties properties) {
         super(properties);
 
         BlockState blockDefinition = stateDefinition.any()
             .setValue(IS_PROCESSING, false);
+
         this.registerDefaultState(
-            Objects.requireNonNull(blockDefinition)); 
+            Objects.requireNonNull(blockDefinition)
+        ); 
     }
     
     @Override
@@ -111,7 +114,7 @@ public class CopperMachine extends Block {
         {
             serverLevel.setBlock(
                 pos, 
-                state.setValue(IS_PROCESSING, true), 
+                state.setValue(IS_PROCESSING, true),
                 UPDATE_ALL
             );
 

@@ -4,7 +4,6 @@ import com.example.examplemod.Items.CopperTotem;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 
 public class AllItems {
