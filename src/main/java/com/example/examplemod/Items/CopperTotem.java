@@ -25,7 +25,7 @@ public class CopperTotem extends Item {
     ) {
         event.setCanceled(true);
         totem.shrink(1);
-        player.setHealth(1.0F);
+        player.setHealth(0.5F);
         player.removeAllEffects();
         player.level().broadcastEntityEvent(player, (byte) 35);
     }
