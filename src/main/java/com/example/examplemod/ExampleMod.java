@@ -8,7 +8,6 @@ import com.tterrag.registrate.Registrate;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -16,7 +15,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ExampleMod.MODID)
 public class ExampleMod {
-    public static final String MODID = "clm_integrated";
+    public static final String MODID = "examplemod";
     
     public static final Registrate REGISTRATE = 
         Registrate.create(ExampleMod.MODID);
@@ -40,7 +39,8 @@ public class ExampleMod {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        // LOGGER.info("HELLO from server starting");
+        return;
     }
 
     public static Registrate getRegistrate() {

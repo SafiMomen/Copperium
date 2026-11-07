@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -18,66 +19,125 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class CopperMachine extends Block {
+    public static final BooleanProperty IS_PROCESSING = 
+        BooleanProperty.create("processing_state");
+
+    public static final int PROCESSING_TIME = 4 * 20; // 5 seconds
+    
     public CopperMachine(Properties properties) {
         super(properties);
+
+        BlockState blockDefinition = stateDefinition.any()
+            .setValue(IS_PROCESSING, false);
+        this.registerDefaultState(
+            Objects.requireNonNull(blockDefinition)); 
+    }
+    
+    @Override
+    protected void createBlockStateDefinition(
+        Builder<Block, BlockState> builder
+    ) {
+        builder.add(IS_PROCESSING);
     }
 
+    private void processBlockInteraction(ServerLevel serverLevel, Player player, BlockPos pos) {
+        serverLevel.playSound(
+            player, 
+            Objects.requireNonNull(pos), 
+            Objects.requireNonNull(
+                SoundEvents.ENCHANTMENT_TABLE_USE
+            ), 
+            SoundSource.BLOCKS
+        ); 
+            
+        double cx = pos.getX() + 0.5;
+        double cy = pos.getY() + 0.5;
+        double cz = pos.getZ() + 0.5;
+
+        serverLevel.sendParticles(
+            Objects.requireNonNull(ParticleTypes.ENCHANT), 
+            cx, cy, cz, 
+            30, // number of particles
+            0.2, 0.2, 0.2, 
+            0.5
+        ); // particle sounds
+    }
+
+    private void giveResultItem(ServerLevel serverLevel, BlockPos pos) {
+        serverLevel = Objects.requireNonNull(serverLevel);
+
+        double cx = pos.getX() + 0.5;
+        double cy = pos.getY() + 0.5;
+        double cz = pos.getZ() + 0.5;
+        
+        ItemEntity droppedItem = new ItemEntity(
+            serverLevel, 
+            cx, cy + 0.5, cz, 
+            new ItemStack(Objects.requireNonNull(
+                AllItems.COPPER_TOTEM.get()), 1),
+            0.0, 0.25, 0.0
+        );
+        droppedItem.setDefaultPickUpDelay();
+        serverLevel.addFreshEntity(droppedItem);
+    }
+    
     @Override
     protected ItemInteractionResult useItemOn(
         ItemStack stack, 
-        BlockState _state, 
+        BlockState state, 
         Level level, 
         BlockPos pos,
         Player player, 
         InteractionHand hand, 
         BlockHitResult _hitResult
     ) {
-        // return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         if (!stack.is(Objects.requireNonNull(
             Items.COPPER_BLOCK))) {
             
             return ItemInteractionResult.FAIL;
         }
+        if (state.getValue(IS_PROCESSING)) 
+        {
+            // should not be able to click 
+            // during proceesing time.
+            return ItemInteractionResult.FAIL;
+        }
         if (level instanceof ServerLevel serverLevel) 
         {
-            serverLevel.playSound(
-                player, 
-                Objects.requireNonNull(pos), 
-                Objects.requireNonNull(
-                    SoundEvents.ENCHANTMENT_TABLE_USE
-                ), 
-                SoundSource.BLOCKS
-            ); // TODO: add better sound effects. 
-               
-            double cx = pos.getX() + 0.5;
-            double cy = pos.getY() + 0.5;
-            double cz = pos.getZ() + 0.5;
+            serverLevel.setBlock(
+                pos, 
+                state.setValue(IS_PROCESSING, true), 
+                UPDATE_ALL
+            );
 
-            serverLevel.sendParticles(
-                Objects.requireNonNull(ParticleTypes.ENCHANT), 
-                cx, cy, cz, 
-                30, // number of particles
-                0.2, 0.2, 0.2, 
-                0.5
-            ); // particle sounds
+            this.processBlockInteraction(serverLevel, player, pos);
+
+            serverLevel.scheduleTick(pos, this, PROCESSING_TIME);
 
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1); // reduce the item from hand 
             }
-            
-            ItemEntity droppedItem = new ItemEntity(
-                serverLevel, 
-                cx, cy + 0.5, cz, 
-                new ItemStack(Objects.requireNonNull(
-                    AllItems.COPPER_TOTEM.get()), 1),
-                0.0, 0.25, 0.0
-            );
-            droppedItem.setDefaultPickUpDelay();
-            serverLevel.addFreshEntity(droppedItem);
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    protected void tick(
+        BlockState state, 
+        ServerLevel level, 
+        BlockPos pos, 
+        RandomSource random
+    ) {
+        if (!state.getValue(IS_PROCESSING)) {
+            return;
+        }
+        level.setBlock(pos, state.setValue(IS_PROCESSING, false), UPDATE_ALL);
+
+        this.giveResultItem(level, pos);
     }
 }
