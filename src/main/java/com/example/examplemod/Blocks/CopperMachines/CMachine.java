@@ -15,8 +15,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -26,7 +28,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class CMachine extends Block implements EntityBlock {
@@ -34,6 +35,8 @@ public class CMachine extends Block implements EntityBlock {
         BooleanProperty.create("processing_state");
 
     public static final int PROCESSING_TIME = 4 * 20; // 5 seconds
+    
+    public static final Item ITEM_TO_FEED = Items.COPPER_BLOCK;
     
     public CMachine(Properties properties) {
         super(properties);
@@ -66,9 +69,9 @@ public class CMachine extends Block implements EntityBlock {
         builder.add(IS_PROCESSING);
     }
 
-    private void processBlockInteraction(ServerLevel serverLevel, Player player, BlockPos pos) {
+    private void processBlockInteraction(ServerLevel serverLevel, BlockPos pos) {
         serverLevel.playSound(
-            player, 
+            null, // should play to all players.
             Objects.requireNonNull(pos), 
             Objects.requireNonNull(
                 SoundEvents.ENCHANTMENT_TABLE_USE
@@ -117,9 +120,7 @@ public class CMachine extends Block implements EntityBlock {
         InteractionHand hand, 
         BlockHitResult _hitResult
     ) {
-        if (!stack.is(Objects.requireNonNull(
-            Items.COPPER_BLOCK))) {
-            
+        if (!stack.is(Objects.requireNonNull(ITEM_TO_FEED))) {
             return ItemInteractionResult.FAIL;
         }
         if (state.getValue(IS_PROCESSING)) 
@@ -140,7 +141,7 @@ public class CMachine extends Block implements EntityBlock {
                 machine.StartProcessing();
             }
 
-            this.processBlockInteraction(serverLevel, player, pos);
+            this.processBlockInteraction(serverLevel, pos);
 
             serverLevel.scheduleTick(pos, this, PROCESSING_TIME);
 
@@ -149,6 +150,34 @@ public class CMachine extends Block implements EntityBlock {
             }
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if (!(level instanceof ServerLevel serverLevel)) { return; }
+        if (!(entity instanceof ItemEntity itemEntity)) { return; }
+
+        if (state.getValue(IS_PROCESSING)) { return; }
+
+        ItemStack itemStack = itemEntity.getItem();
+        if (!itemStack.is(Objects.requireNonNull(ITEM_TO_FEED))) { return; }
+        if (!(serverLevel.getBlockEntity(pos) 
+            instanceof CMachineEntity machineEntity)) { 
+
+            return; 
+        }
+
+        serverLevel.setBlock(
+            pos, 
+            state.setValue(IS_PROCESSING, true),
+            UPDATE_ALL
+        );
+        machineEntity.StartProcessing();
+        this.processBlockInteraction(serverLevel, pos);
+
+        serverLevel.scheduleTick(pos, this, PROCESSING_TIME);
+
+        itemEntity.discard();
     }
 
     @Override
