@@ -13,19 +13,19 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(ExampleMod.MODID)
-public class ExampleMod {
+@Mod(Copperium.MODID)
+public class Copperium {
     public static final String MODID = "copperium";
     
     public static final Registrate REGISTRATE = 
-        Registrate.create(ExampleMod.MODID);
+        Registrate.create(Copperium.MODID);
 
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public ExampleMod(IEventBus modEventBus, ModContainer modContainer) {
+    public Copperium(IEventBus modEventBus, ModContainer modContainer) {
         AllItems.register();
         AllBlocks.register();
         AllBlockEntityTypes.register();
@@ -45,6 +45,6 @@ public class ExampleMod {
     }
 
     public static Registrate getRegistrate() {
-        return ExampleMod.REGISTRATE;
+        return Copperium.REGISTRATE;
     }
 }

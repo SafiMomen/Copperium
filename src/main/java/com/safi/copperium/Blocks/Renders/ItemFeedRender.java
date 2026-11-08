@@ -20,7 +20,7 @@ public class ItemFeedRender implements IRenderBlock<CMachineEntity> {
     public void Render(CMachineEntity entity, float progress, PoseStack renderStack, MultiBufferSource bufferSource,
             int packedLight, int packedOverlay) {
 
-        float position = Mth.lerp(progress, 1.25F, 0.75F);
+        float position = Mth.lerp(progress, 1.25F, 0.65F);
 
         renderStack.pushPose();
 

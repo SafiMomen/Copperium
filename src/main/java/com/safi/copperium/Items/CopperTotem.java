@@ -2,7 +2,7 @@ package com.safi.copperium.Items;
 
 import java.util.Objects;
 
-import com.safi.copperium.ExampleMod;
+import com.safi.copperium.Copperium;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +12,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
-@EventBusSubscriber (modid = ExampleMod.MODID)
+@EventBusSubscriber (modid = Copperium.MODID)
 public class CopperTotem extends Item {
     public CopperTotem(Properties properties) {
         super(properties);

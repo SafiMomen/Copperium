@@ -152,9 +152,7 @@ public class CMachine extends Block implements EntityBlock {
         return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        if (!(level instanceof ServerLevel serverLevel)) { return; }
+    public void _processItemStepOn(ServerLevel serverLevel, BlockPos pos, BlockState state, Entity entity) {
         if (!(entity instanceof ItemEntity itemEntity)) { return; }
 
         if (state.getValue(IS_PROCESSING)) { return; }
@@ -179,6 +177,29 @@ public class CMachine extends Block implements EntityBlock {
         serverLevel.scheduleTick(pos, this, PROCESSING_TIME);
  
         itemEntity.discard();
+    }
+
+    public void _processPlayerStepOn(Level serverLevel, BlockPos pos, BlockState state, Entity entity) {
+        if (!(entity instanceof Player player)) { return; }
+
+        if (!state.getValue(IS_PROCESSING)) { return; }
+
+        player.hurt(serverLevel.damageSources().drown(), 1F);
+        
+        var vx = serverLevel.getRandom().nextInt(-1, 1);
+        var vz = serverLevel.getRandom().nextInt(-1, 1);
+        player.push(vx, 1.0, vz);
+        player.hurtMarked = true;
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        super.stepOn(level, pos, state, entity);
+    
+        if (!(level instanceof ServerLevel serverLevel)) { return; }
+        
+        _processItemStepOn(serverLevel, pos, state, entity);
+        _processPlayerStepOn(serverLevel, pos, state, entity);
     }
 
     @Override

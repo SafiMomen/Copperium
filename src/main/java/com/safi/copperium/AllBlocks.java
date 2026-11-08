@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
 
 public class AllBlocks {
-    private static final Registrate REGISTRATE = ExampleMod.getRegistrate();
+    private static final Registrate REGISTRATE = Copperium.getRegistrate();
 
     // provided with a block of copper, it will give back a copper gear
     // it takes time to process, or should take time to process

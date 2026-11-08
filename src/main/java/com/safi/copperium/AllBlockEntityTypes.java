@@ -6,7 +6,7 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class AllBlockEntityTypes {
-    private static final Registrate REGISTRATE = ExampleMod.getRegistrate();
+    private static final Registrate REGISTRATE = Copperium.getRegistrate();
 
     public static final BlockEntityEntry<CMachineEntity> COPPER_MACHINE_ENTITY = REGISTRATE
             .blockEntity("copper_machine", CMachineEntity::new)
