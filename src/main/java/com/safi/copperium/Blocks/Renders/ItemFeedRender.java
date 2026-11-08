@@ -25,7 +25,7 @@ public class ItemFeedRender implements IRenderBlock<CMachineEntity> {
         renderStack.pushPose();
 
         renderStack.translate(0.5, position, 0.5);
-        renderStack.scale(0.25F, 0.25F, 0.25F);
+        renderStack.scale(0.5F, 0.5F, 0.5F);
         renderStack.translate(-0.5, -0.5, -0.5);
         
         _renderDispatcher.renderSingleBlock(
@@ -33,8 +33,8 @@ public class ItemFeedRender implements IRenderBlock<CMachineEntity> {
             renderStack, 
             bufferSource, 
             packedLight, 
-            packedOverlay);
-
+            packedOverlay
+        );
         renderStack.popPose();
     }
 }

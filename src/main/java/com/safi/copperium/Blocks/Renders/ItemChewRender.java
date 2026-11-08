@@ -1,8 +1,5 @@
 package com.safi.copperium.Blocks.Renders;
 
-import org.joml.Math;
-import org.joml.Quaternionf;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.safi.copperium.AllBlocks;
@@ -22,11 +19,11 @@ public class ItemChewRender implements IRenderBlock<CMachineEntity> {
 
     private void _applyInitialOrigin(PoseStack renderStack, float position, float rotation) {
         renderStack.pushPose();
-        renderStack.scale(1, 1, 1);
 
         renderStack.translate(0.5, position, 0.5);
         /* mouth rotation, needed for second mouth */
         renderStack.mulPose(Axis.YP.rotationDegrees(rotation));
+        renderStack.scale(1.15F, 1.15F, 1.15F);
 
         renderStack.translate(-0.5, -0.5, -0.5);
     }
