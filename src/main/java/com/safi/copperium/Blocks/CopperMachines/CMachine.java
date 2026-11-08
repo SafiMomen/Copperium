@@ -34,7 +34,7 @@ public class CMachine extends Block implements EntityBlock {
     public static final BooleanProperty IS_PROCESSING = 
         BooleanProperty.create("processing_state");
 
-    public static final int PROCESSING_TIME = 4 * 20; // 5 seconds
+    public static final int PROCESSING_TIME = 6 * 20; // 5 seconds
     
     public static final Item ITEM_TO_FEED = Items.COPPER_BLOCK;
     

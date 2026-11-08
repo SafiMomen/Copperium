@@ -13,6 +13,6 @@ public class AllBlockEntityTypes {
             .renderer(() -> CMachineRender::new)
             .validBlocks(AllBlocks.COPPER_MACHINE)
             .register();
-
+    
     public static void register() {}
 }
