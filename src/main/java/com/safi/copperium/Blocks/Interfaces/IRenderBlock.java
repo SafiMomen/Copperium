@@ -7,11 +7,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public interface IRenderBlock<T extends BlockEntity> {
     public void Render(
-        T entity, 
-        float progress, 
-        PoseStack poseStack,
-        MultiBufferSource bufferSource, 
-        int packedLight,
-        int packedOverlay
-    );
-} 
+            T entity,
+            float progress,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay);
+}

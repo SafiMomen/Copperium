@@ -45,34 +45,32 @@ public class ItemChewRender implements IRenderBlock<CMachineEntity> {
 
         float sinModifier = 1F - Mth.abs(progress * 2 - 1F);
         float rotation = progress * 360 * 30; // 15 swervers going up/down each
-        float biteMotion = Mth.sin(Mth.DEG_TO_RAD * rotation) * 
-            20F * sinModifier;
+        float biteMotion = Mth.sin(Mth.DEG_TO_RAD * rotation) *
+                20F * sinModifier;
         float biteVisco = Mth.cos(Mth.DEG_TO_RAD * rotation) * 10F * sinModifier;
-        
+
         _applyInitialOrigin(renderStack, position, 0F);
         _applyMouthMotion(renderStack, biteMotion, biteVisco);
 
         _renderDispatcher.renderSingleBlock(
-            AllBlocks.COPPER_MOUTH.getDefaultState(),
-            renderStack, 
-            bufferSource, 
-            packedLight, 
-            packedOverlay
-        );
+                AllBlocks.COPPER_MOUTH.getDefaultState(),
+                renderStack,
+                bufferSource,
+                packedLight,
+                packedOverlay);
 
         renderStack.popPose();
 
         // this is for the other mouth
         _applyInitialOrigin(renderStack, position, 180F);
         _applyMouthMotion(renderStack, biteMotion, biteVisco);
-        
+
         _renderDispatcher.renderSingleBlock(
-            AllBlocks.COPPER_MOUTH.getDefaultState(),
-            renderStack, 
-            bufferSource, 
-            packedLight, 
-            packedOverlay
-        );
+                AllBlocks.COPPER_MOUTH.getDefaultState(),
+                renderStack,
+                bufferSource,
+                packedLight,
+                packedOverlay);
 
         renderStack.popPose();
     }
