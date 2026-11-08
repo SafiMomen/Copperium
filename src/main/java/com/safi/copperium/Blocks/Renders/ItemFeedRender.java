@@ -1,7 +1,7 @@
 package com.safi.copperium.Blocks.Renders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.safi.copperium.Blocks.CopperMachines.CMachineEntity;
+import com.safi.copperium.Blocks.CopperMachine.CMachineEntity;
 import com.safi.copperium.Blocks.Interfaces.IRenderBlock;
 
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -1,4 +1,4 @@
-package com.safi.copperium.Blocks.CopperMachines;
+package com.safi.copperium.Blocks.CopperMachine;
 
 import java.util.Objects;
 

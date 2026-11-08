@@ -1,7 +1,7 @@
 package com.safi.copperium;
 
-import com.safi.copperium.Blocks.CopperMachines.CMachineEntity;
-import com.safi.copperium.Blocks.CopperMachines.CMachineRender;
+import com.safi.copperium.Blocks.CopperMachine.CMachineEntity;
+import com.safi.copperium.Blocks.CopperMachine.CMachineRender;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 

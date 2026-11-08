@@ -1,11 +1,9 @@
 package com.safi.copperium;
 
-import com.safi.copperium.Blocks.CopperMachines.CMachine;
-import com.safi.copperium.Blocks.CopperMachines.CMachineEntity;
-import com.safi.copperium.Blocks.CopperMachines.CMachineRender;
+import com.safi.copperium.Blocks.CopperMachine.CMachine;
+import com.safi.copperium.Blocks.Utils.BlockBenchUtil;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
-import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.data.recipes.RecipeCategory;
@@ -22,17 +20,8 @@ public class AllBlocks {
     // it takes time to process, or should take time to process
     public static final BlockEntry<CMachine> COPPER_MACHINE = REGISTRATE
         .block("copper_machine", CMachine::new)
-        .blockstate((ctx, provider) -> {
-            /* 
-            fuck ass mod loader causes issues when
-            using block-bench models.
-             */ 
-            var model = provider.models().getExistingFile(
-                provider.modLoc("block/copper_machine")
-            );
-
-            provider.simpleBlock(ctx.get(), model);
-        })
+        .blockstate(BlockBenchUtil.GenerateBlockState(
+            "block/copper_machine"))
         .initialProperties(() -> Blocks.DISPENSER)
         .properties(properties -> properties
             // and afterwards should also be unbreakable in the world.
@@ -66,17 +55,9 @@ public class AllBlocks {
     */
     public static final BlockEntry<Block> COPPER_MOUTH = REGISTRATE
         .block("copper_mouth", Block::new)
-        .blockstate((ctx, provider) -> {
-            /* 
-            fuck ass mod loader causes issues when
-            using block-bench models.
-             */ 
-            var model = provider.models().getExistingFile(
-                provider.modLoc("block/copper_consumer")
-            );
-
-            provider.simpleBlock(ctx.get(), model);
-        }).register();
+        .blockstate(BlockBenchUtil.GenerateBlockState(
+            "block/copper_consumer"))
+        .register();
 
     public static void register() {}
 }

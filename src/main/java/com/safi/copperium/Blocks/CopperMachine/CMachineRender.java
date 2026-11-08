@@ -1,4 +1,4 @@
-package com.safi.copperium.Blocks.CopperMachines;
+package com.safi.copperium.Blocks.CopperMachine;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.safi.copperium.Blocks.Renders.ItemChewRender;
