@@ -33,7 +33,7 @@ public class ItemChewRender implements IRenderBlock<CMachineEntity> {
         // 3 is the pivot amount, 16 is the block's texture width/length
         renderStack.translate(0F, 0F, 3F / 16F);
         renderStack.mulPose(Axis.XP.rotationDegrees(biteMotion));
-        renderStack.mulPose(Axis.YP.rotationDegrees(biteVisco));
+        renderStack.mulPose(Axis.ZP.rotationDegrees(biteVisco));
         renderStack.translate(0F, 0F, -3F / 16F);
     }
 
@@ -47,7 +47,7 @@ public class ItemChewRender implements IRenderBlock<CMachineEntity> {
         float rotation = progress * 360 * 30; // 15 swervers going up/down each
         float biteMotion = Mth.sin(Mth.DEG_TO_RAD * rotation) * 
             20F * sinModifier;
-        float biteVisco = Mth.cos(Mth.DEG_TO_RAD * rotation) * sinModifier;
+        float biteVisco = Mth.cos(Mth.DEG_TO_RAD * rotation) * 10F * sinModifier;
         
         _applyInitialOrigin(renderStack, position, 0F);
         _applyMouthMotion(renderStack, biteMotion, biteVisco);
