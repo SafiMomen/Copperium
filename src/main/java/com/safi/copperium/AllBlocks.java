@@ -11,6 +11,7 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
 
@@ -57,6 +58,25 @@ public class AllBlocks {
         .lang("Copper Machine")
         .simpleItem()
         .register();
+    /*
+     In compliment with CMachine 
+     Do not add any recipes
+     Do not add any items,
+     Will be rendered with the mouth
+    */
+    public static final BlockEntry<Block> COPPER_MOUTH = REGISTRATE
+        .block("copper_mouth", Block::new)
+        .blockstate((ctx, provider) -> {
+            /* 
+            fuck ass mod loader causes issues when
+            using block-bench models.
+             */ 
+            var model = provider.models().getExistingFile(
+                provider.modLoc("block/copper_consumer")
+            );
+
+            provider.simpleBlock(ctx.get(), model);
+        }).register();
 
     public static void register() {}
 }
