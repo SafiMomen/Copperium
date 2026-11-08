@@ -6,8 +6,10 @@ import javax.annotation.Nullable;
 
 import com.safi.copperium.AllBlockEntityTypes;
 import com.safi.copperium.AllItems;
+import com.safi.copperium.Blocks.BlockEffects.StepOnEffect;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -37,6 +39,11 @@ public class CMachine extends Block implements EntityBlock {
     public static final int PROCESSING_TIME = 10 * 20;
         
     public static final Item ITEM_TO_FEED = Items.COPPER_BLOCK;
+
+    private static final StepOnEffect _stepOnFlingPlayer = new StepOnEffect(
+        1.0F, 
+        1.0F
+    );
     
     public CMachine(Properties properties) {
         super(properties);
@@ -118,7 +125,7 @@ public class CMachine extends Block implements EntityBlock {
         BlockPos pos,
         Player player, 
         InteractionHand hand, 
-        BlockHitResult _hitResult
+        BlockHitResult hitResult
     ) {
         if (!stack.is(Objects.requireNonNull(ITEM_TO_FEED))) {
             return ItemInteractionResult.FAIL;
@@ -127,7 +134,7 @@ public class CMachine extends Block implements EntityBlock {
         {
             // should not be able to click 
             // during proceesing time.
-            return ItemInteractionResult.FAIL;
+            return ItemInteractionResult.SUCCESS;
         }
         if (level instanceof ServerLevel serverLevel) 
         {
@@ -152,7 +159,8 @@ public class CMachine extends Block implements EntityBlock {
         return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    public void _processItemStepOn(ServerLevel serverLevel, BlockPos pos, BlockState state, Entity entity) {
+    public void _processItemStepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if (!(level instanceof ServerLevel serverLevel)) { return; }
         if (!(entity instanceof ItemEntity itemEntity)) { return; }
 
         if (state.getValue(IS_PROCESSING)) { return; }
@@ -179,27 +187,15 @@ public class CMachine extends Block implements EntityBlock {
         itemEntity.discard();
     }
 
-    public void _processPlayerStepOn(Level serverLevel, BlockPos pos, BlockState state, Entity entity) {
-        if (!(entity instanceof Player player)) { return; }
-
-        if (!state.getValue(IS_PROCESSING)) { return; }
-
-        player.hurt(serverLevel.damageSources().drown(), 1F);
-        
-        var vx = serverLevel.getRandom().nextInt(-1, 1);
-        var vz = serverLevel.getRandom().nextInt(-1, 1);
-        player.push(vx, 1.0, vz);
-        player.hurtMarked = true;
-    }
-
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
-    
-        if (!(level instanceof ServerLevel serverLevel)) { return; }
         
-        _processItemStepOn(serverLevel, pos, state, entity);
-        _processPlayerStepOn(serverLevel, pos, state, entity);
+        _processItemStepOn(level, pos, state, entity);
+
+        if (!state.getValue(IS_PROCESSING)) { return; }
+        _stepOnFlingPlayer.SetDamageSource(level.damageSources().drown());
+        _stepOnFlingPlayer.Activate(level, entity);
     }
 
     @Override
