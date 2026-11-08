@@ -161,6 +161,7 @@ public class CMachine extends Block implements EntityBlock {
 
         ItemStack itemStack = itemEntity.getItem();
         if (!itemStack.is(Objects.requireNonNull(ITEM_TO_FEED))) { return; }
+
         if (!(serverLevel.getBlockEntity(pos) 
             instanceof CMachineEntity machineEntity)) { 
 
@@ -176,7 +177,7 @@ public class CMachine extends Block implements EntityBlock {
         this.processBlockInteraction(serverLevel, pos);
 
         serverLevel.scheduleTick(pos, this, PROCESSING_TIME);
-
+ 
         itemEntity.discard();
     }
 

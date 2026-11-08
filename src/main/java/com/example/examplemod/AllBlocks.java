@@ -21,6 +21,17 @@ public class AllBlocks {
     // it takes time to process, or should take time to process
     public static final BlockEntry<CMachine> COPPER_MACHINE = REGISTRATE
         .block("copper_machine", CMachine::new)
+        .blockstate((ctx, provider) -> {
+            /* 
+            fuck ass mod loader causes issues when
+            using block-bench models.
+             */ 
+            var model = provider.models().getExistingFile(
+                provider.modLoc("block/copper_machine")
+            );
+
+            provider.simpleBlock(ctx.get(), model);
+        })
         .initialProperties(() -> Blocks.DISPENSER)
         .properties(properties -> properties
             // and afterwards should also be unbreakable in the world.
