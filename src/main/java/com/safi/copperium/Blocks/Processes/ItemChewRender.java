@@ -1,16 +1,16 @@
-package com.safi.copperium.Blocks.Renders;
+package com.safi.copperium.Blocks.Processes;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.safi.copperium.AllBlocks;
-import com.safi.copperium.Blocks.CopperMachine.CMachineEntity;
 import com.safi.copperium.Blocks.Interfaces.IRenderBlock;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ItemChewRender implements IRenderBlock<CMachineEntity> {
+public class ItemChewRender<T extends BlockEntity> implements IRenderBlock<T> {
     private BlockRenderDispatcher _renderDispatcher;
 
     public ItemChewRender(BlockRenderDispatcher renderDispatcher) {
@@ -38,7 +38,7 @@ public class ItemChewRender implements IRenderBlock<CMachineEntity> {
     }
 
     @Override
-    public void Render(CMachineEntity entity, float progress, PoseStack renderStack, MultiBufferSource bufferSource,
+    public void Render(T entity, float progress, PoseStack renderStack, MultiBufferSource bufferSource,
             int packedLight, int packedOverlay) {
 
         float position = Mth.lerp(Mth.sin(progress * Mth.PI), 0.5F, 1.25F);

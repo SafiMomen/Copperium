@@ -47,6 +47,36 @@ public class AllBlocks {
             .lang("Copper Machine")
             .simpleItem()
             .register();
+
+    // provided with a block of copper, it will give back a copper gear
+    // it takes time to process, or should take time to process
+    public static final BlockEntry<CMachine> COPPER_GRINDER = REGISTRATE
+            .block("copper_grinder", CMachine::new)
+            .blockstate(BlockBenchUtil.GenerateBlockState(
+                    "block/copper_machine"))
+            .initialProperties(() -> Blocks.DISPENSER)
+            .properties(properties -> properties
+                    .noOcclusion()
+                    .mapColor(MapColor.PODZOL))
+            .recipe((ctx, provider) -> {
+                ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ctx.get())
+                        .pattern("IBI")
+                        .pattern("BNB")
+                        .pattern("IBI")
+                        .define('B', Blocks.COPPER_BLOCK)
+                        .define('N', Items.GRINDSTONE)
+                        .define('I', Items.REDSTONE)
+                        // requries nether-star to balance the mod-pack more
+                        // shouldn't be able to craft right out of the start.
+                        // TODO: change the unlocked by item!
+                        .unlockedBy(
+                                "has_nether_star",
+                                RegistrateRecipeProvider.has(Items.NETHER_STAR))
+                        .save(provider);
+            })
+            .lang("Copper Grinder")
+            .simpleItem()
+            .register();
     /*
      * In compliment with CMachine
      * Do not add any recipes

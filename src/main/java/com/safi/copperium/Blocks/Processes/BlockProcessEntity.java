@@ -1,4 +1,6 @@
-package com.safi.copperium.Blocks.CopperMachine;
+package com.safi.copperium.Blocks.Processes;
+
+import com.safi.copperium.Blocks.Interfaces.IProcessBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -12,16 +14,22 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CMachineEntity extends BlockEntity {
+public class BlockProcessEntity extends BlockEntity {
     private long _processingStartTick = 1L;
+    private IProcessBlock _machineBlock;
 
-    public CMachineEntity(
-        BlockEntityType<CMachineEntity> blockType, 
+    public BlockProcessEntity(
+        BlockEntityType<BlockProcessEntity> blockType, 
         BlockPos worldPosition, 
         BlockState blockState
     ) {
         super(blockType, worldPosition, blockState);
     }
+
+    public BlockProcessEntity InjectBlockProcessor(IProcessBlock blockProcessor) {
+        _machineBlock = blockProcessor;
+        return this;
+    } 
 
     public void StartProcessing() {
         if (level == null || level.isClientSide()) {
@@ -42,7 +50,7 @@ public class CMachineEntity extends BlockEntity {
         }
         BlockState state = this.getBlockState();
 
-        return state.getValue(CMachine.IS_PROCESSING);
+        return state.getValue(_machineBlock.IsProcessing());
     }
 
     public float GetProgress(float partialTick) {
@@ -52,7 +60,7 @@ public class CMachineEntity extends BlockEntity {
 
         float elapsedTime = level.getGameTime() - 
                 this._processingStartTick + partialTick;
-        float progressAlpha = elapsedTime / CMachine.PROCESSING_TIME;
+        float progressAlpha = elapsedTime / _machineBlock.GetProcessTime();
         return Mth.clamp(progressAlpha, 0.0F, 1.0F);
     }
 

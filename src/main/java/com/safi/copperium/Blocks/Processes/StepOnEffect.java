@@ -1,4 +1,4 @@
-package com.safi.copperium.Blocks.BlockEffects;
+package com.safi.copperium.Blocks.Processes;
 
 import com.safi.copperium.Blocks.Interfaces.IEffectBlock;
 

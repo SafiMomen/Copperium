@@ -1,14 +1,15 @@
 package com.safi.copperium.Blocks.CopperMachine;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.safi.copperium.Blocks.Renders.ItemChewRender;
-import com.safi.copperium.Blocks.Renders.ItemFeedRender;
+import com.safi.copperium.Blocks.Processes.BlockProcessEntity;
+import com.safi.copperium.Blocks.Processes.ItemChewRender;
+import com.safi.copperium.Blocks.Processes.ItemFeedRender;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
-public class CMachineRender implements BlockEntityRenderer<CMachineEntity> {
+public class CMachineRender implements BlockEntityRenderer<BlockProcessEntity> {
     private ItemFeedRender _itemFeedRender;
     private ItemChewRender _itemChewRender;
 
@@ -25,7 +26,7 @@ public class CMachineRender implements BlockEntityRenderer<CMachineEntity> {
 
     @Override
     public void render(
-        CMachineEntity blockEntity, 
+        BlockProcessEntity blockEntity, 
         float partialTick, 
         PoseStack renderStack, 
         MultiBufferSource bufferSource, 

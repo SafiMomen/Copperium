@@ -6,10 +6,11 @@ import javax.annotation.Nullable;
 
 import com.safi.copperium.AllBlockEntityTypes;
 import com.safi.copperium.AllItems;
-import com.safi.copperium.Blocks.BlockEffects.StepOnEffect;
+import com.safi.copperium.Blocks.Interfaces.IProcessBlock;
+import com.safi.copperium.Blocks.Processes.BlockProcessEntity;
+import com.safi.copperium.Blocks.Processes.StepOnEffect;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -32,7 +33,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class CMachine extends Block implements EntityBlock {
+public class CMachine extends Block implements EntityBlock, IProcessBlock {
     public static final BooleanProperty IS_PROCESSING = 
         BooleanProperty.create("processing_state");
 
@@ -40,10 +41,8 @@ public class CMachine extends Block implements EntityBlock {
         
     public static final Item ITEM_TO_FEED = Items.COPPER_BLOCK;
 
-    private static final StepOnEffect _stepOnFlingPlayer = new StepOnEffect(
-        1.0F, 
-        1.0F
-    );
+    private static final StepOnEffect _stepOnFlingPlayer = 
+        new StepOnEffect(1.0F, 1.0F);
     
     public CMachine(Properties properties) {
         super(properties);
@@ -63,10 +62,11 @@ public class CMachine extends Block implements EntityBlock {
 
         // assuming this gets called once
         // and once called, it connects approate entity object.
-        return new CMachineEntity(
+        return new BlockProcessEntity(
             AllBlockEntityTypes.COPPER_MACHINE_ENTITY.get(), 
             worldPosition, 
-            blockState);
+            blockState
+        ).InjectBlockProcessor(this);
     }
     
     @Override
@@ -143,7 +143,7 @@ public class CMachine extends Block implements EntityBlock {
                 state.setValue(IS_PROCESSING, true),
                 UPDATE_ALL
             );
-            if (serverLevel.getBlockEntity(pos) instanceof CMachineEntity machine) 
+            if (serverLevel.getBlockEntity(pos) instanceof BlockProcessEntity machine) 
             {
                 machine.StartProcessing();
             }
@@ -169,7 +169,7 @@ public class CMachine extends Block implements EntityBlock {
         if (!itemStack.is(Objects.requireNonNull(ITEM_TO_FEED))) { return; }
 
         if (!(serverLevel.getBlockEntity(pos) 
-            instanceof CMachineEntity machineEntity)) { 
+            instanceof BlockProcessEntity machineEntity)) { 
 
             return; 
         }
@@ -211,5 +211,15 @@ public class CMachine extends Block implements EntityBlock {
         level.setBlock(pos, state.setValue(IS_PROCESSING, false), UPDATE_ALL);
 
         this.giveResultItem(level, pos);
+    }
+
+    @Override
+    public float GetProcessTime() {
+        return PROCESSING_TIME;
+    }
+
+    @Override
+    public BooleanProperty IsProcessing() {
+        return IS_PROCESSING;
     }
 }
