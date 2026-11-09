@@ -18,7 +18,7 @@ public class AllBlockEntityTypes {
     public static final BlockEntityEntry<BlockProcessEntity> COPPER_GRINDER_ENTITY = REGISTRATE
             .blockEntity("copper_grinder", BlockProcessEntity::new)
             .renderer(() -> CGrinderRender::new)
-            .validBlocks(AllBlocks.COPPER_MACHINE)
+            .validBlocks(AllBlocks.COPPER_GRINDER)
             .register();
     
     public static void register() {}

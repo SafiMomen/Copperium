@@ -1,5 +1,6 @@
 package com.safi.copperium;
 
+import com.safi.copperium.Blocks.CopperGrinder.CGrinder;
 import com.safi.copperium.Blocks.CopperMachine.CMachine;
 import com.safi.copperium.Blocks.Utils.BlockBenchUtil;
 import com.tterrag.registrate.Registrate;
@@ -50,8 +51,8 @@ public class AllBlocks {
 
     // provided with a block of copper, it will give back a copper gear
     // it takes time to process, or should take time to process
-    public static final BlockEntry<CMachine> COPPER_GRINDER = REGISTRATE
-            .block("copper_grinder", CMachine::new)
+    public static final BlockEntry<CGrinder> COPPER_GRINDER = REGISTRATE
+            .block("copper_grinder", CGrinder::new)
             .blockstate(BlockBenchUtil.GenerateBlockState(
                     "block/copper_machine"))
             .initialProperties(() -> Blocks.DISPENSER)
