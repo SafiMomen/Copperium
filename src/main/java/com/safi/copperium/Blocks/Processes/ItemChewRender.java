@@ -45,7 +45,7 @@ public class ItemChewRender<T extends BlockEntity> implements IRenderBlock<T> {
 
         float sinModifier = 1F - Mth.abs(progress * 2 - 1F);
         float rotation = progress * 360 * 30; // 15 swervers going up/down each
-        float biteMotion = Mth.sin(Mth.DEG_TO_RAD * rotation) *
+        float biteMotion = Mth.square(Mth.sin(Mth.DEG_TO_RAD * rotation)) *
                 20F * sinModifier;
         float biteVisco = Mth.cos(Mth.DEG_TO_RAD * rotation) * 10F * sinModifier;
 

@@ -66,7 +66,7 @@ public class CMachine extends Block implements EntityBlock, IProcessBlock {
             AllBlockEntityTypes.COPPER_MACHINE_ENTITY.get(), 
             worldPosition, 
             blockState
-        ).InjectBlockProcessor(this);
+        );
     }
     
     @Override

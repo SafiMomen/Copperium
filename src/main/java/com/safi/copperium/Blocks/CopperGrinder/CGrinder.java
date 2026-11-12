@@ -66,7 +66,7 @@ public class CGrinder extends Block implements EntityBlock, IProcessBlock {
             AllBlockEntityTypes.COPPER_GRINDER_ENTITY.get(), 
             worldPosition, 
             blockState
-        ).InjectBlockProcessor(this);
+        );
     }
     
     @Override

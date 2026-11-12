@@ -10,16 +10,16 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
 public class CMachineRender implements BlockEntityRenderer<BlockProcessEntity> {
-    private ItemFeedRender _itemFeedRender;
-    private ItemChewRender _itemChewRender;
+    private ItemFeedRender<BlockProcessEntity> _itemFeedRender;
+    private ItemChewRender<BlockProcessEntity> _itemChewRender;
 
     public CMachineRender(
         BlockEntityRendererProvider.Context context
     ) {
-        _itemFeedRender = new ItemFeedRender(
+        _itemFeedRender = new ItemFeedRender<BlockProcessEntity>(
             context.getBlockRenderDispatcher()
         );
-        _itemChewRender = new ItemChewRender(
+        _itemChewRender = new ItemChewRender<BlockProcessEntity>(
             context.getBlockRenderDispatcher()
         );
     }

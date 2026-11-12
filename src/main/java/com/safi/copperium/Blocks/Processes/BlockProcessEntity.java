@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockProcessEntity extends BlockEntity {
-    private long _processingStartTick = 1L;
+    private long _processingStartTick = -1L;
     private IProcessBlock _machineBlock;
 
     public BlockProcessEntity(
@@ -24,12 +24,10 @@ public class BlockProcessEntity extends BlockEntity {
         BlockState blockState
     ) {
         super(blockType, worldPosition, blockState);
+        
+        // this entity won't be registered unless it has IProcessBlock anyway.
+        _machineBlock = (IProcessBlock)blockState.getBlock();
     }
-
-    public BlockProcessEntity InjectBlockProcessor(IProcessBlock blockProcessor) {
-        _machineBlock = blockProcessor;
-        return this;
-    } 
 
     public void StartProcessing() {
         if (level == null || level.isClientSide()) {
